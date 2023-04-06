@@ -15,3 +15,11 @@ Este repositório tem como objetivo criar uma estrutura de banco de dados com tr
 ```
 O pgAdmin é o aplicativo cliente com  interface gráfica para gerenciamento de bancos de dados PostgreSQL. Atravé dele será possível executar consultas SQL, criar e editar tabelas, e gerenciar backups e restaurações de bancos de dados.
 ```
+
+## Criação do banco de dados:
+
+1. Abra o pgAdmin e faça login com o usuário "postgres" e a senha definida durante a instalação.
+2. Clique com o "Object" e selecione "Create" > "Server Group..." e dê um nome ao grupo de servidor. "app-financeiro".
+3. Clique novamente em "Object" e selecione "Register" > "Server...". Na aba "General" dê um nome ao servidor ("boletos_hibridos") e selecione o Server group ("app-financeiro").
+4. Na aba "Connection", insira o nome do host (localhost), o número da porta (5432), o nome do banco de dados ("postgres") e senha do usuário posgres definida na instalação. Clique em "Save".
+5. Clique com o botão direito do mouse em "Databases" e selecione "Create" > "Database...". Dê um nome ao banco de dados ("base_prod") e selecione o servidor que acabou de criar. Clique em "Save".
