@@ -26,7 +26,7 @@ O pgAdmin é o aplicativo cliente com  interface gráfica para gerenciamento de 
 ## Criação das tabelas e relacionamentos:
 
 1. Na janela queryTool do pgAdmin, "Tools" > "Query tool" >  execute o comando SQL para criar a tabela "associados":
-
+```
 CREATE TABLE associados (
 id SERIAL PRIMARY KEY,
 nome VARCHAR(100) NOT NULL,
@@ -39,4 +39,10 @@ data_criacao TIMESTAMP NOT NULL DEFAULT NOW(),
 ultima_atualizacao TIMESTAMP,
 contato VARCHAR(100)
 );
+```
+
+2. Adicione uma restrição de unicidade para o campo cnpj_cpf para garantir que não haja mais de um associado com o mesmo CNPJ/CPF:
+```
+ALTER TABLE associados ADD CONSTRAINT uk_cnpj_cpf UNIQUE (cnpj_cpf);
+```
 
