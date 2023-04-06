@@ -47,7 +47,7 @@ ALTER TABLE associados ADD CONSTRAINT uk_cnpj_cpf UNIQUE (cnpj_cpf);
 ```
 
 3. Execute o comando SQL para criar a tabela "pagamentos":
-
+```
 CREATE TABLE pagamentos (
 id SERIAL PRIMARY KEY,
 data_pagamento DATE NOT NULL,
@@ -57,9 +57,9 @@ status_pagamento VARCHAR(20) NOT NULL,
 numero_documento VARCHAR(20) NOT NULL,
 id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
 );
-
+```
 4. Execute o seguinte comando SQL para criar a tabela "boletos":
-
+```
 CREATE TABLE boletos (
 id SERIAL PRIMARY KEY,
 numero_boleto VARCHAR(20) NOT NULL,
@@ -69,3 +69,17 @@ codigo_barras VARCHAR(100) NOT NULL,
 url_qr_code VARCHAR(500) NOT NULL,
 id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
 );
+```
+## Inserindo dados e testando relacionamentos.
+
+1. Execute o seguinte comando SQL para inserir dados de teste na tabela "associados":
+ ```  
+INSERT INTO associados (nome, endereco, telefone, email, tipo, cnpj_cpf, contato)
+VALUES ('Empresa LTDA', 'Avenida logo ali, 999', '(11) 8888-8888', 'contato@empresa.xyz', 'PJ', '12.345.678/0001-90', 'Genrente um');
+
+INSERT INTO associados (nome, endereco, telefone, email, tipo, cnpj_cpf, contato)
+VALUES ('Alberto A', 'Rua A, 456', '(71) 9999-9999', 'alberto@email.com', 'PF', '987.654.321-00', '');
+
+INSERT INTO associados (nome, endereco, telefone, email, tipo, cnpj_cpf, contato)
+VALUES ('Empresa S/A', 'Rua logo depois, 9998', '(88) 9999-6666', 'contato@empresa.com', 'PJ', '98.765.432/0001-21', 'Contador dois');
+```
