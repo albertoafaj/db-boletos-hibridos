@@ -46,3 +46,26 @@ contato VARCHAR(100)
 ALTER TABLE associados ADD CONSTRAINT uk_cnpj_cpf UNIQUE (cnpj_cpf);
 ```
 
+3. Execute o comando SQL para criar a tabela "pagamentos":
+
+CREATE TABLE pagamentos (
+id SERIAL PRIMARY KEY,
+data_pagamento DATE NOT NULL,
+valor DECIMAL(10, 2) NOT NULL,
+forma_pagamento VARCHAR(20) NOT NULL,
+status_pagamento VARCHAR(20) NOT NULL,
+numero_documento VARCHAR(20) NOT NULL,
+id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
+);
+
+4. Execute o seguinte comando SQL para criar a tabela "boletos":
+
+CREATE TABLE boletos (
+id SERIAL PRIMARY KEY,
+numero_boleto VARCHAR(20) NOT NULL,
+valor DECIMAL(10, 2) NOT NULL,
+data_vencimento DATE NOT NULL,
+codigo_barras VARCHAR(100) NOT NULL,
+url_qr_code VARCHAR(500) NOT NULL,
+id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
+);
