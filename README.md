@@ -1,0 +1,3 @@
+# Estrutura de DB para gerenciamento de boletos híbridos.
+
+Este repositório tem como objetivo criar uma estrutura de banco de dados com três tabelas inter-relacionadas para gerenciar informações de associados, pagamentos e boletos híbridos.Este DB poderá ser usado para armazenar, gerenciar e consultar informações de associados e pagamentos, bem como para gerar boletos híbridos com códigos de barras e QR Codes.
