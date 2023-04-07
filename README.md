@@ -63,10 +63,10 @@ forma_pagamento VARCHAR(20) NOT NULL,
 status_pagamento VARCHAR(20) NOT NULL,
 numero_documento VARCHAR(20) NOT NULL,
 id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE,
-boleto_id INTEGER REFERENCES boletos(id)
+id_boleto INTEGER REFERENCES boletos(id)
 );
 ```
-## Inserindo dados e testando relacionamentos.
+## Inserindo dados.
 
 1. Execute o seguinte comando SQL para inserir dados de teste na tabela "associados":
  ```  
@@ -83,19 +83,19 @@ VALUES ('Empresa S/A', 'Rua logo depois, 9998', '(88) 9999-6666', 'contato@empre
 2. Execute o comando SQL para inserir dados de teste na tabela "pagamentos":
 
 ```
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, id_boleto)
 VALUES ('2023-03-15', 350.00, 'Cartão de Crédito', 'Pago', '123457', 1, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, id_boleto)
 VALUES ('2023-03-30', 250.00, 'Dinheiro', 'Pago', '', 2, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, id_boleto)
 VALUES ('2023-02-05', 700.00, 'Boleto/PIX', 'Pendente', '324235', 1, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, id_boleto)
 VALUES ('2023-04-01', 1000.00, 'Boleto', 'Pago', '54353', 3, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, id_boleto)
 VALUES ('2023-04-20', 1200.00, 'Boleto', 'Pendente', '635463', 3, null);
 ```
 
@@ -113,7 +113,34 @@ VALUES ('000524003', 1200.00, '2023-04-20', '98.765.432/0001-21', 'data:image/pn
 ```
 4. Execute o comando SQL para atualizar o relacionamento entre o pagamento e o boleto gerado:
 ```
-UPDATE pagamentos SET boleto_id = 1 WHERE id = 3;
-UPDATE pagamentos SET boleto_id = 2 WHERE id = 4;
-UPDATE pagamentos SET boleto_id = 3 WHERE id = 5;
+UPDATE pagamentos SET id_boleto = 1 WHERE id = 3;
+UPDATE pagamentos SET id_boleto = 2 WHERE id = 4;
+UPDATE pagamentos SET id_boleto = 3 WHERE id = 5;
+```
+
+## Testando relacionamentos.
+
+ 1. Execute-o o comando SQL para verificar o relacionamento entre as tabelas "associados" e "pagamentos"
+```
+SELECT * FROM associados INNER JOIN pagamentos ON associados.id = pagamentos.id_associado;
+```
+ 2. Execute-o o comando SQL para verificar o relacionamento entre as tabelas "associados", "pagamentos" e "boletos";
+```
+SELECT * FROM associados 
+INNER JOIN pagamentos ON associados.id = pagamentos.id_associado
+LEFT JOIN boletos ON boletos.id = pagamentos.id_boleto
+```
+3. Execute-o o comando SQL para verificar quais os pagamentos foram pagos utilizando a função Boleto com PIX;
+```
+SELECT * FROM associados 
+INNER JOIN pagamentos ON associados.id = pagamentos.id_associado
+LEFT JOIN boletos ON boletos.id = pagamentos.id_boleto
+WHERE pagamentos.forma_pagamento = 'Boleto/PIX'
+```
+4. Execute-o o comando SQL para verificar quais os pagamentos festão pendentes;
+```
+SELECT * FROM associados 
+INNER JOIN pagamentos ON associados.id = pagamentos.id_associado
+LEFT JOIN boletos ON boletos.id = pagamentos.id_boleto
+WHERE pagamentos.status_pagamento = 'Pendente'
 ```
