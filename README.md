@@ -66,7 +66,7 @@ numero_boleto VARCHAR(20) NOT NULL,
 valor DECIMAL(10, 2) NOT NULL,
 data_vencimento DATE NOT NULL,
 codigo_barras VARCHAR(100) NOT NULL,
-url_qr_code VARCHAR(500) NOT NULL,
+qr_code VARCHAR(500) NOT NULL,
 id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
 );
 ```
@@ -82,4 +82,36 @@ VALUES ('Alberto A', 'Rua A, 456', '(71) 9999-9999', 'alberto@email.com', 'PF', 
 
 INSERT INTO associados (nome, endereco, telefone, email, tipo, cnpj_cpf, contato)
 VALUES ('Empresa S/A', 'Rua logo depois, 9998', '(88) 9999-6666', 'contato@empresa.com', 'PJ', '98.765.432/0001-21', 'Contador dois');
+```
+
+2. Execute o comando SQL para inserir dados de teste na tabela "pagamentos":
+
+```
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
+VALUES ('2023-03-15', 350.00, 'Cartão de Crédito', 'Pago', '123457', 1);
+
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
+VALUES ('2023-03-30', 250.00, 'Dinheiro', 'Pago', '', 2);
+
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
+VALUES ('2023-02-05', 700.00, 'Boleto/PIX', 'Pendente', '000001', 1);
+
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
+VALUES ('2023-04-01', 1000.00, 'Boleto', 'Pago', '000002', 3);
+
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
+VALUES ('2023-04-20', 1200.00, 'Boleto', 'Pendente', '000003', 3);
+```
+
+3. Execute o comando SQL para inserir dados de teste na tabela "boletos":
+
+```
+INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
+VALUES ('000001', 700.00, '2023-02-05', '12.345.678/0001-90', 'data:image/png;base64,iVBORw0Kzmksmmv', 1);
+
+INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
+VALUES ('000002', 1000.00, '2023-04-01', '98.765.432/0001-21', 'data:image/png;base64,iVBORw0Kzmksmmv', 3);
+
+INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
+VALUES ('000003', 1200.00, '2023-04-20', '98.765.432/0001-21', 'data:image/png;base64,iVBORw0Kzmksmmv', 3);
 ```
