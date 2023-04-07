@@ -45,20 +45,7 @@ contato VARCHAR(100)
 ```
 ALTER TABLE associados ADD CONSTRAINT uk_cnpj_cpf UNIQUE (cnpj_cpf);
 ```
-
-3. Execute o comando SQL para criar a tabela "pagamentos":
-```
-CREATE TABLE pagamentos (
-id SERIAL PRIMARY KEY,
-data_pagamento DATE NOT NULL,
-valor DECIMAL(10, 2) NOT NULL,
-forma_pagamento VARCHAR(20) NOT NULL,
-status_pagamento VARCHAR(20) NOT NULL,
-numero_documento VARCHAR(20) NOT NULL,
-id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
-);
-```
-4. Execute o seguinte comando SQL para criar a tabela "boletos":
+3. Execute o seguinte comando SQL para criar a tabela "boletos":
 ```
 CREATE TABLE boletos (
 id SERIAL PRIMARY KEY,
@@ -68,6 +55,19 @@ data_vencimento DATE NOT NULL,
 codigo_barras VARCHAR(100) NOT NULL,
 qr_code VARCHAR(500) NOT NULL,
 id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
+);
+```
+4. Execute o comando SQL para criar a tabela "pagamentos":
+```
+CREATE TABLE pagamentos (
+id SERIAL PRIMARY KEY,
+data_pagamento DATE NOT NULL,
+valor DECIMAL(10, 2) NOT NULL,
+forma_pagamento VARCHAR(20) NOT NULL,
+status_pagamento VARCHAR(20) NOT NULL,
+numero_documento VARCHAR(20) NOT NULL,
+id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE,
+boleto_id INTEGER REFERENCES boletos(id)
 );
 ```
 ## Inserindo dados e testando relacionamentos.
@@ -87,31 +87,37 @@ VALUES ('Empresa S/A', 'Rua logo depois, 9998', '(88) 9999-6666', 'contato@empre
 2. Execute o comando SQL para inserir dados de teste na tabela "pagamentos":
 
 ```
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
-VALUES ('2023-03-15', 350.00, 'Cartão de Crédito', 'Pago', '123457', 1);
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+VALUES ('2023-03-15', 350.00, 'Cartão de Crédito', 'Pago', '123457', 1, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
-VALUES ('2023-03-30', 250.00, 'Dinheiro', 'Pago', '', 2);
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+VALUES ('2023-03-30', 250.00, 'Dinheiro', 'Pago', '', 2, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
-VALUES ('2023-02-05', 700.00, 'Boleto/PIX', 'Pendente', '000001', 1);
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+VALUES ('2023-02-05', 700.00, 'Boleto/PIX', 'Pendente', '324235', 1, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
-VALUES ('2023-04-01', 1000.00, 'Boleto', 'Pago', '000002', 3);
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+VALUES ('2023-04-01', 1000.00, 'Boleto', 'Pago', '54353', 3, null);
 
-INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado)
-VALUES ('2023-04-20', 1200.00, 'Boleto', 'Pendente', '000003', 3);
+INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, boleto_id)
+VALUES ('2023-04-20', 1200.00, 'Boleto', 'Pendente', '635463', 3, null);
 ```
 
 3. Execute o comando SQL para inserir dados de teste na tabela "boletos":
 
 ```
 INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
-VALUES ('000001', 700.00, '2023-02-05', '12.345.678/0001-90', 'data:image/png;base64,iVBORw0Kzmksmmv', 1);
+VALUES ('34252524', 700.00, '2023-02-05', '12.345.678/0001-90', 'data:image/png;base64,iVBORw0Kzmksmmv', 1);
 
 INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
-VALUES ('000002', 1000.00, '2023-04-01', '98.765.432/0001-21', 'data:image/png;base64,iVBORw0Kzmksmmv', 3);
+VALUES ('00004202', 1000.00, '2023-04-01', '98.765.432/0001-21', 'data:image/png;base64,iVBORw0Kzmksmmv', 3);
 
 INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
-VALUES ('000003', 1200.00, '2023-04-20', '98.765.432/0001-21', 'data:image/png;base64,iVBORw0Kzmksmmv', 3);
+VALUES ('000524003', 1200.00, '2023-04-20', '98.765.432/0001-21', 'data:image/png;base64,iVBORw0Kzmksmmv', 3);
+```
+4. Execute o comando SQL para atualizar o relacionamento entre o pagamento e o boleto gerado:
+```
+UPDATE pagamentos SET boleto_id = 1 WHERE id = 3;
+UPDATE pagamentos SET boleto_id = 2 WHERE id = 4;
+UPDATE pagamentos SET boleto_id = 3 WHERE id = 5;
 ```
