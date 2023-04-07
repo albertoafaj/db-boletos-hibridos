@@ -66,6 +66,18 @@ id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE,
 id_boleto INTEGER REFERENCES boletos(id)
 );
 ```
+3. Execute o comando SQL para criar a tabela "bancos":
+```
+CREATE TABLE bancos (
+    id SERIAL PRIMARY KEY,
+    codigo_banco INTEGER,
+    nome_banco VARCHAR(50),
+    carteira VARCHAR(10),
+    agencia VARCHAR(10),
+    conta VARCHAR(20),
+    digito_verificador VARCHAR(5)
+);
+```
 ## Inserindo dados.
 
 1. Execute o seguinte comando SQL para inserir dados de teste na tabela "associados":
@@ -98,8 +110,15 @@ VALUES ('2023-04-01', 1000.00, 'Boleto', 'Pago', '54353', 3, null);
 INSERT INTO pagamentos (data_pagamento, valor, forma_pagamento, status_pagamento, numero_documento, id_associado, id_boleto)
 VALUES ('2023-04-20', 1200.00, 'Boleto', 'Pendente', '635463', 3, null);
 ```
+3. Execute o comando SQL para inserir dados de teste na tabela "bancos":
 
-3. Execute o comando SQL para inserir dados de teste na tabela "boletos":
+```
+INSERT INTO boleto (codigo_banco, nome_banco, carteira, agencia, conta, digito_verificador)
+VALUES 
+(001, 'BB', '175', '0123', '12345-6', '7');
+
+```
+4. Execute o comando SQL para inserir dados de teste na tabela "boletos":
 
 ```
 INSERT INTO boletos (numero_boleto, valor, data_vencimento, codigo_barras, qr_code, id_associado)
