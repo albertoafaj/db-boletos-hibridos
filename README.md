@@ -28,24 +28,20 @@ O pgAdmin é o aplicativo cliente com  interface gráfica para gerenciamento de 
 1. Na janela queryTool do pgAdmin, "Tools" > "Query tool" >  execute o comando SQL para criar a tabela "associados":
 ```
 CREATE TABLE associados (
-id SERIAL PRIMARY KEY,
-nome VARCHAR(100) NOT NULL,
-endereco VARCHAR(200) NOT NULL,
-telefone VARCHAR(20),
-email VARCHAR(100),
-tipo VARCHAR(2) NOT NULL,
-cnpj_cpf VARCHAR(20) NOT NULL,
-data_criacao TIMESTAMP NOT NULL DEFAULT NOW(),
-ultima_atualizacao TIMESTAMP,
-contato VARCHAR(100)
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    endereco VARCHAR(200) NOT NULL,
+    telefone VARCHAR(20),
+    email VARCHAR(100),
+    tipo VARCHAR(2) NOT NULL,
+    cnpj_cpf VARCHAR(20) NOT NULL UNIQUE,
+    data_criacao TIMESTAMP NOT NULL DEFAULT NOW(),
+    ultima_atualizacao TIMESTAMP,
+    contato VARCHAR(100)
 );
 ```
 
-2. Adicione uma restrição de unicidade para o campo cnpj_cpf para garantir que não haja mais de um associado com o mesmo CNPJ/CPF:
-```
-ALTER TABLE associados ADD CONSTRAINT uk_cnpj_cpf UNIQUE (cnpj_cpf);
-```
-3. Execute o seguinte comando SQL para criar a tabela "boletos":
+2. Execute o seguinte comando SQL para criar a tabela "boletos":
 ```
 CREATE TABLE boletos (
 id SERIAL PRIMARY KEY,
@@ -57,7 +53,7 @@ qr_code VARCHAR(500) NOT NULL,
 id_associado INTEGER NOT NULL REFERENCES associados(id) ON DELETE CASCADE
 );
 ```
-4. Execute o comando SQL para criar a tabela "pagamentos":
+3. Execute o comando SQL para criar a tabela "pagamentos":
 ```
 CREATE TABLE pagamentos (
 id SERIAL PRIMARY KEY,
